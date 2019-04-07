@@ -74,7 +74,7 @@ namespace GuessNumberGame.Domain
                 Console.WriteLine($"The middle value/guessed value is {sub[midpoint]}.");
                 if (sub[midpoint] == value)
                 {
-                    Console.WriteLine($"The value searched for, {valueToLookUp}, has been found. Total guess {guessCount} times.");
+                    Console.WriteLine($"The value searched for, {valueToLookUp}, has been found. Total guess {guessCount} times.\n");
                     return midpoint;
                 }
                 //if value not found, return a negative number that is the bitwise complement of the index of 
@@ -100,5 +100,7 @@ namespace GuessNumberGame.Domain
 
             return helper(a, 0, a.Count - 1, valueToLookUp);
         }
+
+
     }
 }
