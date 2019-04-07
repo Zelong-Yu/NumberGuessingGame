@@ -46,22 +46,33 @@ namespace App
                     return false;
             }
         }
-
-        private void ComputerGuess()
+        private static void bisectionPresentation()
         {
-            bool end = false;
             do
             {
-                int length = UI.AcceptValidInt("===================================================================================\n" +
-                    "Let the computer guess a number between 1 and n. Enter n: (Hit Enter for default = 100. Enter 0 to quit) \n>", 100, 0);
+                int length = UI.AcceptValidInt("Will generate a list 1,2,...n. Enter n: (hit Enter for default = 10. Enter 0 to quit) \n>", 10, 0, 130000000);
                 if (length == 0) break;
-                Console.WriteLine($"Pick a number between 1 and {length}. Write it down.");
+                Console.WriteLine($"n is {length}. ");
+                //if range is big, silence mode
+                bool verbose = true;
+                if (length > 65536)
+                {
+                    Console.WriteLine("Generated List too large. Silent mode on.");
+                    verbose = false;
+                }
 
-                Util.Guess(1, length);
-            } while (!end);           
+
+                int value = UI.AcceptValidInt($"Select a number from 1 to {length}: (hit Enter for default = 1. Enter 0 to quit) \n>", 1, 0, length);
+                if (value == 0) break;
+
+                List<int> Sample = new List<int>(Enumerable.Range(1, length));
+
+                int indexOfValue=Util.BinarySearch(Sample, value, true, verbose);
+
+                Console.WriteLine($"Value {value} is at index {indexOfValue}.\n");
+            } while (true);
         }
-
-        private void HumanGuess()
+        private static void HumanGuess()
         {
             bool end = false;
             do
@@ -93,32 +104,20 @@ namespace App
                 } while (true);
             } while (!end);
         }
-
-        private static void bisectionPresentation()
+        private static void ComputerGuess()
         {
+            bool end = false;
             do
             {
-                int length = UI.AcceptValidInt("Will generate a list 1,2,...n. Enter n: (hit Enter for default = 10. Enter 0 to quit) \n>", 10, 0, 130000000);
+                int length = UI.AcceptValidInt("===================================================================================\n" +
+                    "Let the computer guess a number between 1 and n. Enter n: (Hit Enter for default = 100. Enter 0 to quit) \n>", 100, 0);
                 if (length == 0) break;
-                Console.WriteLine($"n is {length}. ");
-                //if range is big, silence mode
-                bool verbose = true;
-                if (length > 65536)
-                {
-                    Console.WriteLine("Generated List too large. Silent mode on.");
-                    verbose = false;
-                }
+                Console.WriteLine($"Pick a number between 1 and {length}. Write it down.");
 
-
-                int value = UI.AcceptValidInt($"Select a number from 1 to {length}: (hit Enter for default = 1. Enter 0 to quit) \n>", 1, 0, length);
-                if (value == 0) break;
-
-                List<int> Sample = new List<int>(Enumerable.Range(1, length));
-
-                int indexOfValue=Util.BinarySearch(Sample, value, true, verbose);
-
-                Console.WriteLine($"Value {value} is at index {indexOfValue}.\n");
-            } while (true);
+                Util.Guess(1, length);
+            } while (!end);           
         }
+
+
     }
 }
