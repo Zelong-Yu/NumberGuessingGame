@@ -65,10 +65,15 @@ namespace App
             } while (!end);
 
             
-            int Guess(int startIndex, int endIndex, int guessCount=0)
+            int Guess(int startnum, int endnum, int guessCount=0)
             {
-                int midpoint = (startIndex + endIndex) / 2;
-                
+                int midpoint = (startnum + endnum) / 2;
+                //make sure the guessed is no less than 1
+                if ( midpoint <=0 )
+                {
+                    Console.WriteLine($"That's impossible. Check the number you write down. Is it outside [1,n]?\n");
+                    return -1;
+                }
                 Console.WriteLine($"My guess is {midpoint}. \n");
                 switch(UI.PromptForInputInline("Is that right? (Q to quit) Y/[N] >\n"))
                 {
@@ -78,7 +83,7 @@ namespace App
                         return midpoint;
         
                     case ConsoleKey.N:
-                        if (startIndex >= endIndex)
+                        if (startnum >= endnum)
                         {
                             Console.WriteLine($"That's impossible. Check the number you write down. Is it outside [1,n]?\n");
                             return -1;
@@ -87,16 +92,16 @@ namespace App
                         {
                             case ConsoleKey.H:
                                 Console.WriteLine($"You say {midpoint} is too high.\n");
-                                return Guess(startIndex, midpoint-1, guessCount + 1);
+                                return Guess(startnum, midpoint-1, guessCount + 1);
                             case ConsoleKey.L:
                                 Console.WriteLine($"You say {midpoint} is too low.\n");
-                                return Guess(midpoint + 1, endIndex, guessCount + 1);
+                                return Guess(midpoint + 1, endnum, guessCount + 1);
                             case ConsoleKey.Q:
                                 Console.WriteLine($"User Abort. \n");
                                 return -1;
                             default:
                                 Console.WriteLine("Invalid key. Let's try again.\n");
-                                return Guess(startIndex, endIndex, guessCount);
+                                return Guess(startnum, endnum, guessCount);
                         }
 
                     case ConsoleKey.Q:
@@ -104,7 +109,7 @@ namespace App
                         return -1;
                     default:
                         Console.WriteLine("Invalid key. Let's try again.\n");
-                        return Guess(startIndex, endIndex, guessCount);
+                        return Guess(startnum, endnum, guessCount);
                 }
 
             }
