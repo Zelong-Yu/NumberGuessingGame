@@ -16,6 +16,7 @@ Average number of repetitions necessary for me to guess the number: 12, when I a
 When I can careful enough, the maximum number of guesses I need to guess a number between 1 and 1000 is 10, since we at most need log2 1000~9.966 round up to 10 guesses. 
 
 **Guess my number, computer plays**
+
 |Actuall value        |  Guesses Perform |    
 |---------------------|------------------| 
 |1                    |6                 |
