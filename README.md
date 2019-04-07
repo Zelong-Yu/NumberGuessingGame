@@ -17,7 +17,7 @@ When I can careful enough, the maximum number of guesses I need to guess a numbe
 
 **Guess my number, computer plays**
 
-|Actuall value        |  Guesses Perform |    
+|Actual value        |  Guesses Perform |    
 |---------------------|------------------| 
 |1                    |6                 |
 |100                  |7                 |
