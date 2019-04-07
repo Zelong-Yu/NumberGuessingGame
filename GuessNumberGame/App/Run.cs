@@ -56,55 +56,60 @@ namespace App
             bool end = false;
             do
             {
-                int length = UI.AcceptValidInt("Let the computer guess a number between 1 and n. Enter n: (Hit Enter for default = 100. Enter 0 to quit) \n>", 100, 0);
+                int length = UI.AcceptValidInt("=================================================================================\n" +
+                    "Let the computer guess a number between 1 and n. Enter n: (Hit Enter for default = 100. Enter 0 to quit) \n>", 100, 0);
                 if (length == 0) break;
                 Console.WriteLine($"Pick a number between 1 and {length}. Write it down.");
+
+                Guess(1, length);
             } while (!end);
 
             
-            /*int helper(List<int> sub, int startIndex, int endIndex, int value)
+            int Guess(int startIndex, int endIndex, int guessCount=0)
             {
                 int midpoint = (startIndex + endIndex) / 2;
-
-                Console.WriteLine($"My guess is {midpoint}. Is that right? Y/[N]");
-                switch(UI.PromptForInputInline(" "))
+                
+                Console.WriteLine($"My guess is {midpoint}. \n");
+                switch(UI.PromptForInputInline("Is that right? (Q to quit) Y/[N] >\n"))
                 {
                     case ConsoleKey.Y:
-                        selector++;
-                        selector %= count;
-                        break;
-                    case ConsoleKey.UpArrow:
-                        selector--;
-                        selector = (selector + count) % count;
-                        break;
+                        guessCount++;
+                        Console.WriteLine($"I guess {midpoint} right! That took me {guessCount} guesses.\n");
+                        return midpoint;
+        
+                    case ConsoleKey.N:
+                        if (startIndex >= endIndex)
+                        {
+                            Console.WriteLine($"That's impossible. Check the number you write down. Is it outside [1,n]?\n");
+                            return -1;
+                        }
+                        switch (UI.PromptForInputInline($"Is {midpoint} too [H]igh or too [L]ow?  (Q to quit)  H/L >\n"))
+                        {
+                            case ConsoleKey.H:
+                                Console.WriteLine($"You say {midpoint} is too high.\n");
+                                return Guess(startIndex, midpoint-1, guessCount + 1);
+                            case ConsoleKey.L:
+                                Console.WriteLine($"You say {midpoint} is too low.\n");
+                                return Guess(midpoint + 1, endIndex, guessCount + 1);
+                            case ConsoleKey.Q:
+                                Console.WriteLine($"User Abort. \n");
+                                return -1;
+                            default:
+                                Console.WriteLine("Invalid key. Let's try again.\n");
+                                return Guess(startIndex, endIndex, guessCount);
+                        }
+
                     case ConsoleKey.Q:
-                        done = true;
-                        selector = -1;
-                        break;
-                    case ConsoleKey.RightArrow:
-                    case ConsoleKey.Enter:
-                        done = true;
-                        break;
+                        Console.WriteLine($"User Abort. \n");
+                        return -1;
+                    default:
+                        Console.WriteLine("Invalid key. Let's try again.\n");
+                        return Guess(startIndex, endIndex, guessCount);
                 }
 
-
-
-                if (sub[midpoint] == value) return midpoint;
-
-                else if (startIndex > endIndex) return ~startIndex;
-                else if (value < sub[midpoint])
-
-                {
-                    return helper(sub, startIndex, midpoint - 1, value);
-                }
-
-                else
-                {
-                    return helper(sub, midpoint + 1, endIndex, value);
-                }
             }
 
-            return helper(a, 0, a.Count - 1, valueToLookUp);*/
+            
         }
 
         private void HumanGuess()
