@@ -101,6 +101,54 @@ namespace GuessNumberGame.Domain
             return helper(a, 0, a.Count - 1, valueToLookUp);
         }
 
+        public static int Guess(int startnum, int endnum, int guessCount = 0)
+        {
+            int midpoint = (startnum + endnum) / 2;
+            //make sure the guessed is no less than 1
+            if (midpoint <= 0)
+            {
+                Console.WriteLine($"That's impossible. Check the number you write down. Is it outside [1,n]?\n");
+                return -1;
+            }
+            Console.WriteLine($"My guess is {midpoint}. \n");
+            switch (UI.PromptForInputInline("Is that right? (Q to quit) Y/[N] >\n"))
+            {
+                case ConsoleKey.Y:
+                    guessCount++;
+                    Console.WriteLine($"I guess {midpoint} right! That took me {guessCount} guesses.\n");
+                    return midpoint;
+
+                case ConsoleKey.N:
+                    if (startnum >= endnum)
+                    {
+                        Console.WriteLine($"That's impossible. Check the number you write down. Is it outside [1,n]?\n");
+                        return -1;
+                    }
+                    switch (UI.PromptForInputInline($"Is {midpoint} too [H]igh or too [L]ow?  (Q to quit)  H/L >\n"))
+                    {
+                        case ConsoleKey.H:
+                            Console.WriteLine($"You say {midpoint} is too high.\n");
+                            return Guess(startnum, midpoint - 1, guessCount + 1);
+                        case ConsoleKey.L:
+                            Console.WriteLine($"You say {midpoint} is too low.\n");
+                            return Guess(midpoint + 1, endnum, guessCount + 1);
+                        case ConsoleKey.Q:
+                            Console.WriteLine($"User Abort. \n");
+                            return -1;
+                        default:
+                            Console.WriteLine("Invalid key. Let's try again.\n");
+                            return Guess(startnum, endnum, guessCount);
+                    }
+
+                case ConsoleKey.Q:
+                    Console.WriteLine($"User Abort. \n");
+                    return -1;
+                default:
+                    Console.WriteLine("Invalid key. Let's try again.\n");
+                    return Guess(startnum, endnum, guessCount);
+            }
+
+        }
 
     }
 }
